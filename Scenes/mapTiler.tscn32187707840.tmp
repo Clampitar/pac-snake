@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6jhul7yuavyo"]
+
+[ext_resource type="Script" uid="uid://wy32gdfig80b" path="res://Scenes/map_tiler.gd" id="1_6p2kk"]
+[ext_resource type="PackedScene" uid="uid://bshhufoyrd6vq" path="res://Scenes/park_map.tscn" id="1_fwii4"]
+[ext_resource type="PackedScene" uid="uid://vohbxatxd7qm" path="res://Scenes/player.tscn" id="2_6p2kk"]
+
+[node name="MapTiler" type="Node2D"]
+script = ExtResource("1_6p2kk")
+map_width_half = 200
+tile_size = 20
+
+[node name="ParkMap" parent="." instance=ExtResource("1_fwii4")]
+
+[node name="Player" parent="." instance=ExtResource("2_6p2kk")]
+z_index = 1
+position = Vector2(10, 10)
+
+[connection signal="move" from="Player" to="." method="_on_player_move"]

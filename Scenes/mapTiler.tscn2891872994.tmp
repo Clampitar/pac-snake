@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6jhul7yuavyo"]
+
+[ext_resource type="PackedScene" uid="uid://bshhufoyrd6vq" path="res://Scenes/park_map.tscn" id="1_fwii4"]
+[ext_resource type="PackedScene" uid="uid://vohbxatxd7qm" path="res://Scenes/player.tscn" id="2_6p2kk"]
+
+[node name="MapTiler" type="Node2D"]
+
+[node name="ParkMap" parent="." instance=ExtResource("1_fwii4")]
+
+[node name="Player" parent="." instance=ExtResource("2_6p2kk")]

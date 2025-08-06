@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://c6jhul7yuavyo"]
+
+[ext_resource type="Script" uid="uid://wy32gdfig80b" path="res://Scenes/map_tiler.gd" id="1_6p2kk"]
+[ext_resource type="PackedScene" uid="uid://vohbxatxd7qm" path="res://Scenes/player.tscn" id="2_6p2kk"]
+[ext_resource type="Texture2D" uid="uid://df70d58rcox7e" path="res://Assets/bodyStraight.png" id="5_g8qj1"]
+[ext_resource type="Texture2D" uid="uid://3s6ilgp2ptbd" path="res://Assets/bodyCornerLeft.png" id="6_iaj07"]
+[ext_resource type="Texture2D" uid="uid://b0t3yjipkchnr" path="res://Assets/bodyCornerRight.png" id="7_g8qj1"]
+
+[node name="MapTiler" type="Node2D"]
+script = ExtResource("1_6p2kk")
+map_width_half = 200
+tile_size = 20
+
+[node name="Player" parent="." instance=ExtResource("2_6p2kk")]
+z_index = 2
+position = Vector2(10, 10)
+
+[node name="Body" type="Node2D" parent="."]
+visible = false
+z_index = 1
+
+[node name="Straight" type="Sprite2D" parent="Body"]
+texture = ExtResource("5_g8qj1")
+
+[node name="CornerLeft" type="Sprite2D" parent="Body"]
+texture = ExtResource("6_iaj07")
+
+[node name="CornerRight" type="Sprite2D" parent="Body"]
+texture = ExtResource("7_g8qj1")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[connection signal="move" from="Player" to="." method="_on_player_move"]
+[connection signal="tail_eat" from="Player" to="." method="on_tail_eat"]
+
+[editable path="Player"]

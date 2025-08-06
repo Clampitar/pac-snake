@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://cbhi5kyf76508"]
+
+[ext_resource type="TileSet" uid="uid://5xxkqbubel66" path="res://Assets/food.tres" id="1_4qsxq"]
+[ext_resource type="Script" uid="uid://cbtxknbh665y3" path="res://Scenes/maps/level.gd" id="1_5awbe"]
+[ext_resource type="TileSet" uid="uid://dw0liwxns3nlv" path="res://Assets/map.tres" id="2_5awbe"]
+
+[node name="Level" type="Node2D"]
+script = ExtResource("1_5awbe")
+
+[node name="FoodLayer" type="TileMapLayer" parent="."]
+tile_set = ExtResource("1_4qsxq")
+
+[node name="MapLayer" type="TileMapLayer" parent="."]
+z_index = -1
+tile_set = ExtResource("2_5awbe")

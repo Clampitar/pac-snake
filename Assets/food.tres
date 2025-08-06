@@ -1,0 +1,21 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://5xxkqbubel66"]
+
+[ext_resource type="Texture2D" uid="uid://d4ahwui5at0w5" path="res://Assets/food.png" id="1_em76j"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5ti2t"]
+resource_name = "food"
+texture = ExtResource("1_em76j")
+texture_region_size = Vector2i(20, 20)
+0:0/0 = 0
+1:0/0 = 0
+1:0/0/custom_data_0 = 1
+2:0/0 = 0
+2:0/0/custom_data_0 = 2
+
+[resource]
+tile_size = Vector2i(20, 20)
+physics_layer_0/collision_layer = 1
+terrain_set_0/mode = 0
+custom_data_layer_0/name = "collision_id"
+custom_data_layer_0/type = 2
+sources/0 = SubResource("TileSetAtlasSource_5ti2t")

@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwn073xjwm2ym"]
+
+[ext_resource type="Script" uid="uid://bavr2q1dfoncx" path="res://Scenes/main_menu.gd" id="1_28flt"]
+[ext_resource type="LabelSettings" uid="uid://c7nbsd77g7h2t" path="res://label_settings.tres" id="2_1ehe0"]
+[ext_resource type="AudioStream" uid="uid://bjj5l6r0kveq7" path="res://Assets/untitled_5.wav" id="2_48xlc"]
+
+[node name="MainGame" type="Node"]
+script = ExtResource("1_28flt")
+
+[node name="VictoryText" type="Label" parent="."]
+offset_left = -250.0
+offset_top = -80.0
+offset_right = 250.0
+offset_bottom = 47.0
+text = "Pac-Snake has completed its quest to become Ourobos
+It has eaten all including itself, and yet it is still not satisfied
+
+ Press r to loop back the the begining of the game"
+label_settings = ExtResource("2_1ehe0")
+horizontal_alignment = 1
+max_lines_visible = 0
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_48xlc")
+autoplay = true
+
+[node name="FoodLeft" type="Label" parent="."]
+offset_left = -300.0
+offset_top = -20.0
+offset_right = -223.0
+offset_bottom = 3.0
+label_settings = ExtResource("2_1ehe0")
+
+[node name="SnakeLength" type="Label" parent="."]
+offset_left = -300.0
+offset_top = 20.0
+offset_right = -191.0
+offset_bottom = 43.0
+label_settings = ExtResource("2_1ehe0")
+
+[node name="EndTextTimer" type="Timer" parent="."]
+wait_time = 1.6
+
+[connection signal="timeout" from="EndTextTimer" to="." method="_advance_end_text"]
