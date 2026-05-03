@@ -14,7 +14,8 @@ var head_coords: Vector2i
 var pieces: Array[Piece]
 var firstmove: bool = true
 var eating_tail: bool = false
-
+var piece_sources :PackedStringArray = ["res://Assets/bodyStraight.png",
+	"res://Assets/bodyCornerLeft.png", "res://Assets/bodyStraight.png",  "res://Assets/bodyCornerRight.png"]
 enum DIR{
 	left = 2,
 	right = 0,
@@ -64,74 +65,21 @@ func move_to(new_coords: Vector2i, dir: DIR, eat: bool):
 		head.visible = true
 		tail.visible = true
 		rotate_part(tail, dir)
-		rotate_part(head, dir)
 	elif not firstmove:
 		var piece: Piece
-		var rotation: float = 0
-		if dir == DIR.left:
-			rotation = PI
-			match last_dir:
-				DIR.left:
-					piece = gets()
-				DIR.up:
-					piece = getl()
-					rotation = -PI/2
-				DIR.down:
-					piece = getr()
-					rotation = PI/2
-				_:
-					print("left from right?")
-			last_dir = DIR.left
-			head.rotation = -PI
-		elif dir == DIR.right:
-			match last_dir:
-				DIR.right:
-					piece = gets()
-				DIR.up:
-					piece = getr()
-					rotation = -PI/2
-				DIR.down:
-					piece = getl()
-					rotation = PI/2
-				_:
-					print("right from left?")
-			last_dir = DIR.right
-			head.rotation = 0
-		elif  dir == DIR.down:
-			match last_dir:
-				DIR.right:
-					piece = getr()
-				DIR.down:
-					piece = gets()
-					rotation = PI/2
-				DIR.left:
-					piece = getl()
-					rotation = PI
-			last_dir = DIR.down
-			head.rotation = PI/2
-		elif  dir == DIR.up:
-			match last_dir:
-				DIR.right:
-					piece = getl()
-				DIR.left:
-					piece = getr()
-					rotation = PI
-				DIR.up:
-					piece = gets()
-					rotation = -PI/2
-			last_dir = DIR.up
-			head.rotation = -PI/2
-		if(piece):
-			piece.place(head_coords, last_dir)
-			piece.rotate(rotation)
-			pieces.append(piece)
-			add_child(piece)
-
+		piece = Piece.new(piece_sources[(last_dir - dir) % 4])
+		piece.place(head_coords, dir)
+		piece.rotate(last_dir * PI/2)
+		pieces.append(piece)
+		add_child(piece)
+		last_dir = dir
+	rotate_part(head, dir)
 	head_coords = new_coords
 	if firstmove:
 		tail_coords = new_coords
 	head.position = head_coords * 20
 	if head is AnimatedSprite2D:
+		head.set_frame(0)
 		head.play("eat")
 		if(head_coords == tail_coords):
 			eating_tail = true
@@ -152,27 +100,10 @@ func move_to(new_coords: Vector2i, dir: DIR, eat: bool):
 			tail.position = pieces[0].position
 			rotate_part(tail, pieces[0].dir)
 			remove_child(pieces[0])
-			pieces.remove_at(0)
+			pieces.pop_front()
 
 func rotate_part(part: Node2D, dir: DIR):
-	if dir == DIR.right:
-		part.rotation = 0
-	elif dir == DIR.left:
-		part.rotation = PI
-	elif dir == DIR.down:
-		part.rotation = PI/2
-	elif dir == DIR.up:
-		part.rotation = -PI/2
-
-func gets()  -> Sprite2D:
-	return Piece.new("res://Assets/bodyStraight.png")
-
-func getl()  -> Sprite2D:
-	return Piece.new("res://Assets/bodyCornerLeft.png")
-
-func getr()  -> Sprite2D:
-	return Piece.new("res://Assets/bodyCornerRight.png")
-
+	part.rotation = dir*PI/2
 
 func _on_eat_finished():
 	$FakeFood.visible = false
