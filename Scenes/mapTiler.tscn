@@ -32,5 +32,6 @@ texture = ExtResource("7_g8qj1")
 
 [connection signal="move" from="Player" to="." method="_on_player_move"]
 [connection signal="tail_eat" from="Player" to="." method="on_tail_eat"]
+[connection signal="undo" from="Player" to="." method="_on_player_undo"]
 
 [editable path="Player"]

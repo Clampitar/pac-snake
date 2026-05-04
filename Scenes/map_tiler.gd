@@ -47,10 +47,30 @@ func _on_player_move(x, y):
 		player.move_to(new_coords, dir, map.has_food(new_coords))
 		map.eat_food(new_coords)
 		player.head_coords = new_coords
-		update_food.emit(map.count_food(), 1 if player.firstmove else player.pieces.size() + 2)
+		update_food.emit(map.count_food(), 1 if player.pieces.is_empty() else player.pieces.size() + 2)
 
 func on_tail_eat(snake_length: int):
 	if map.level_won(snake_length):
 		win_level.emit()
 	else:
 		lose_level.emit()
+
+
+func _on_player_undo() -> void:
+	if player.previous_actions.is_empty(): return
+	var action: Player.Action = player.previous_actions.pop_back()
+	var new_tail_coords: Vector2i = player.tail_coords - dir_vector(action.tail_dir)
+	player.un_move(new_tail_coords, action.tail_dir, action.ate)
+
+func dir_vector(dir: Player.DIR) -> Vector2i:
+	match dir:
+		Player.DIR.right:
+			return Vector2.RIGHT
+		Player.DIR.down:
+			return Vector2.DOWN
+		Player.DIR.left:
+			return Vector2.LEFT
+		_:
+			return Vector2.UP
+			
+		
