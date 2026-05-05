@@ -60,7 +60,10 @@ func _on_player_undo() -> void:
 	if player.previous_actions.is_empty(): return
 	var action: Player.Action = player.previous_actions.pop_back()
 	var new_tail_coords: Vector2i = player.tail_coords - dir_vector(action.tail_dir)
+	if action.ate:
+		map.un_eat_food(player.head_coords)
 	player.un_move(new_tail_coords, action.tail_dir, action.ate)
+	update_food.emit(map.count_food(), 1 if player.pieces.is_empty() else player.pieces.size() + 2)
 
 func dir_vector(dir: Player.DIR) -> Vector2i:
 	match dir:

@@ -63,6 +63,7 @@ func can_pass(coords: Vector2i) -> bool:
 			and not eating_tail)
 
 func move_to(new_coords: Vector2i, dir: DIR, eat: bool):
+	var last_dir = dir
 	if  eat and tail_coords == head_coords:
 		head.visible = false
 		tail.position = head.position
@@ -71,8 +72,8 @@ func move_to(new_coords: Vector2i, dir: DIR, eat: bool):
 		head.visible = true
 		tail.visible = true
 		rotate_part(tail, dir)
-	else:
-		add_piece(dir, head_dir)
+	elif tail_coords != head_coords:
+		add_piece(dir, head_dir, head_coords)
 	head_dir = dir
 	rotate_part(head, dir)
 	head_coords = new_coords
@@ -94,11 +95,18 @@ func move_to(new_coords: Vector2i, dir: DIR, eat: bool):
 	if eat:
 		$FakeFood.visible = true
 		$FakeFood.position = head.position
-	if not eat and not eating_tail:
-		tail_coords = remove_piece(tail, 0)
+	if not eat and not eating_tail and not pieces.is_empty():
+		var piece: Piece = pieces.pop_front()
+		var to_dir = piece.to_dir
+		tail_dir = piece.to_dir
+		last_dir = piece.from_dir
+		tail.position = piece.position
+		rotate_part(tail, piece.to_dir)
+		remove_child(piece)
+		tail_coords = piece.coords
+	previous_actions.append(Action.new(last_dir, eat))
 	if head is Sprite2D:
 		tail_coords = new_coords
-	previous_actions.append(Action.new(dir, eat))
 
 func un_move(coords: Vector2i, dir: DIR, ate: bool):
 	if head is Sprite2D:
@@ -116,26 +124,31 @@ func un_move(coords: Vector2i, dir: DIR, ate: bool):
 		rotate_part(head, dir)
 		return
 	if not ate:
-		add_piece(dir, tail_dir)
-	head_coords = remove_piece(head, pieces.size()-1)
+		add_piece(tail_dir, dir, tail_coords, false)
+		tail_coords = coords
+		tail.position = coords * 20
+		rotate_part(tail, dir)
+		tail_dir = dir
+	var piece: Piece = pieces.pop_back()
+	head_dir = piece.from_dir
+	rotate_part(head, piece.from_dir)
+	head_coords = piece.coords
+	head.position = piece.coords * 20
+	remove_child(piece)
 
 func rotate_part(part: Node2D, dir: DIR):
 	part.rotation = dir*PI/2
 
-func add_piece(dir: DIR, last_dir: DIR):
+func add_piece(dir: DIR, last_dir: DIR, coords: Vector2i, back: bool = true):
 	var piece: Piece
 	piece = Piece.new(piece_sources[(last_dir - dir) % 4])
-	piece.place(head_coords, dir)
+	piece.place(coords, dir, last_dir)
 	piece.rotate(last_dir * PI/2)
-	pieces.append(piece)
+	if back:
+		pieces.append(piece)
+	else:
+		pieces.push_front(piece)
 	add_child(piece)
-
-func remove_piece(replacer: Node2D, index: int) -> Vector2:
-	var piece: Piece = pieces.pop_at(index)
-	replacer.position = piece.position
-	rotate_part(replacer, piece.dir)
-	remove_child(piece)
-	return piece.coords
 
 func _on_eat_finished():
 	$FakeFood.visible = false

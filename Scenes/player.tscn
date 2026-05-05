@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://vohbxatxd7qm"]
+[gd_scene load_steps=15 format=3 uid="uid://vohbxatxd7qm"]
 
 [ext_resource type="Script" uid="uid://cu0m0y8vtgcl7" path="res://Scenes/player.gd" id="1_v0iea"]
 [ext_resource type="Texture2D" uid="uid://dknyao1w0d7gw" path="res://Assets/playerStart.png" id="2_cvnsp"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://c07dapnsh7gk5" path="res://Assets/EatTailStraight1.png" id="4_8erm5"]
 [ext_resource type="Texture2D" uid="uid://l55ih456vv8b" path="res://Assets/playerHeadOpen1.png" id="4_fkybt"]
 [ext_resource type="Texture2D" uid="uid://ci815shkhvgev" path="res://Assets/EatTailLeft1.png" id="4_tx1dd"]
+[ext_resource type="Script" uid="uid://d33stbd37msw3" path="res://piece.gd" id="4_ukyrk"]
 [ext_resource type="Texture2D" uid="uid://ba51b8sfnv4iw" path="res://Assets/EatTailStraight2.png" id="5_f1ek2"]
 [ext_resource type="Texture2D" uid="uid://cyxxjprgqe6wi" path="res://Assets/EatTailLeft2.png" id="5_gymyn"]
 [ext_resource type="Texture2D" uid="uid://bc778lygsfb1f" path="res://Assets/playerHeadOpen2.png" id="5_x3wgy"]
@@ -70,11 +71,13 @@ texture = ExtResource("2_cvnsp")
 visible = false
 z_index = 1
 texture = ExtResource("3_6t5aa")
+script = ExtResource("4_ukyrk")
+metadata/_custom_type_script = "uid://d33stbd37msw3"
 
 [node name="HeadEat" type="AnimatedSprite2D" parent="."]
 visible = false
 sprite_frames = SubResource("SpriteFrames_3smsa")
-animation = &"eat"
+animation = &"EatTailStraight"
 
 [node name="FakeFood" type="Sprite2D" parent="."]
 visible = false
