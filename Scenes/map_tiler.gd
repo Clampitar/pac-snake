@@ -36,6 +36,7 @@ func dupe(x: int, y: int, deg: int):
 
 func _on_player_move(x, y):
 	var new_coords: Vector2i = Vector2i(x, y) + player.head_coords
+	new_coords = map.wrap_coords(new_coords)
 	if map.can_pass(new_coords) and player.can_pass(new_coords):
 		var dir: Player.DIR = Player.DIR.up
 		if x < 0:
@@ -60,6 +61,7 @@ func _on_player_undo() -> void:
 	if player.previous_actions.is_empty(): return
 	var action: Player.Action = player.previous_actions.pop_back()
 	var new_tail_coords: Vector2i = player.tail_coords - dir_vector(action.tail_dir)
+	new_tail_coords = map.wrap_coords(new_tail_coords)
 	if action.ate:
 		map.un_eat_food(player.head_coords)
 	player.un_move(new_tail_coords, action.tail_dir, action.ate)

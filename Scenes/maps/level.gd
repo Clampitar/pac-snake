@@ -4,7 +4,6 @@ class_name Level extends Node2D
 
 @onready var food: TileMapLayer = $FoodLayer
 @onready var map: TileMapLayer = $MapLayer
-@onready var food_memory: TileMapLayer = $FoodLayer.duplicate()
 var food_count = 0
 
 func _ready():
@@ -28,3 +27,9 @@ func un_eat_food(coords: Vector2i):
 
 func level_won(snake_length: int) -> bool:
 	return snake_length >= food_count
+
+func wrap_coords(coords: Vector2i) -> Vector2i:
+	var rect: Rect2i = map.get_used_rect()
+	var size = rect.size
+	coords -= rect.position
+	return Vector2i(posmod(coords.x, size.x), posmod(coords.y, size.y)) + rect.position
